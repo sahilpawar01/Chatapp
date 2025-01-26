@@ -19,7 +19,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.NODE_ENV === "production" ? "https://your-frontend-url.onrender.com" : "http://localhost:4001",
+    origin: process.env.NODE_ENV === "production" ? "https://chatapp-1-miyd.onrender.com" : "http://localhost:4001",
     credentials: true
 }));
 
