@@ -8,6 +8,10 @@ export const useSocketContext = () => {
   return useContext(socketContext);
 };
  
+const SOCKET_URL = import.meta.env.PROD 
+    ? 'https://your-backend-url.onrender.com' 
+    : 'http://localhost:5002';
+
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -15,10 +19,11 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const newSocket = io("http://localhost:5002/", {
+      const newSocket = io(SOCKET_URL, {
         query: {
           userId: authUser.user._id,
         },
+        withCredentials: true
       });
       setSocket(newSocket);
 
