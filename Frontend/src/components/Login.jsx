@@ -1,5 +1,4 @@
-import api from '../path/to/axios'; 
-import axios from "axios";
+import api from '../config/axios'; 
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthProvider";
