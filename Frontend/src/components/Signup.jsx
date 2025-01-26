@@ -29,7 +29,7 @@ function Signup() {
       confirmPassword: data.confirmPassword,
     };
     // console.log(userInfo);
-    await api
+    await axios
       .post("/api/user/signup", userInfo)
       .then((response) => {
         if (response.data) {
