@@ -1,4 +1,5 @@
 import React from "react";
+import api from '../config/axios'; 
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useAuth } from "../context/AuthProvider";
@@ -28,7 +29,7 @@ function Signup() {
       confirmPassword: data.confirmPassword,
     };
     // console.log(userInfo);
-    await axios
+    await api
       .post("/api/user/signup", userInfo)
       .then((response) => {
         if (response.data) {
