@@ -9,7 +9,7 @@ export const useSocketContext = () => {
 };
  
 const SOCKET_URL = import.meta.env.PROD 
-    ? 'https://your-backend-url.onrender.com' 
+    ? 'https://chatapp-ktcw.onrender.com' 
     : 'http://localhost:5002';
 
 export const SocketProvider = ({ children }) => {
