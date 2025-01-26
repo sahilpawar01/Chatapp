@@ -10,6 +10,7 @@ export default defineConfig({
       "/api": {
         target: "https://chatapp-ktcw.onrender.com",
         changeOrigin: true,
+        secure: false
       },
     },
   },

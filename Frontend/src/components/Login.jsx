@@ -1,3 +1,4 @@
+import api from '../path/to/axios'; 
 import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -21,7 +22,7 @@ function Login() {
     };
 
     axios
-      .post("/api/user/login", userInfo)
+      .post("/user/login", userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Login successful");
