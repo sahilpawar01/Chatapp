@@ -21,8 +21,8 @@ function Login() {
       password: data.password,
     };
 
-    axios
-      .post("/user/login", userInfo)
+    api
+      .post("/api/user/login", userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Login successful");
