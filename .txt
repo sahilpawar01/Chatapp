@@ -1,1 +1,0 @@
-simple chat app using which  you can chat with others

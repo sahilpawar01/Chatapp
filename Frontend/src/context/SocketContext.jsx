@@ -1,58 +1,60 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useAuth } from "./AuthProvider";
-import io from "socket.io-client";
-const socketContext = createContext();
+import { createContext, useContext, useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
+import { useAuth } from './AuthContext';
 
-// it is a hook.
-export const useSocketContext = () => {
-  return useContext(socketContext);
+const SocketContext = createContext(undefined); // Use undefined to detect if Provider is missing
+
+export const useSocket = () => {
+  const context = useContext(SocketContext);
+  // If context is undefined, it means we're outside the Provider
+  // If context is null, it means Provider exists but socket isn't initialized yet (which is fine)
+  if (context === undefined) {
+    throw new Error('useSocket must be used within a SocketProvider');
+  }
+  return context; // This will be null initially, then the socket object once connected
 };
- 
-const SOCKET_URL = import.meta.env.PROD 
-    ? 'https://chatapp-ktcw.onrender.com' 
-    : 'http://localhost:5002';
 
 export const SocketProvider = ({ children }) => {
+  const { token } = useAuth();
   const [socket, setSocket] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [authUser] = useAuth();
 
   useEffect(() => {
-    if (authUser) {
+    if (token) {
+      const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
       const newSocket = io(SOCKET_URL, {
-        query: {
-          userId: authUser.user._id,
+        auth: {
+          token,
         },
-        withCredentials: true
+        transports: ['websocket', 'polling'],
       });
+
+      newSocket.on('connect', () => {
+        console.log('Socket connected');
+      });
+
+      newSocket.on('disconnect', () => {
+        console.log('Socket disconnected');
+      });
+
+      newSocket.on('connect_error', (error) => {
+        console.error('Socket connection error:', error);
+      });
+
       setSocket(newSocket);
 
-      newSocket.on("getOnlineUsers", (users) => {
-        setOnlineUsers(users);
-      });
-
-      // Moved the messageDeleted event listener here
-      newSocket.on('messageDeleted', (deletedMessageId) => {
-        // Note: setMessages is not defined in this context, so this might need to be handled differently
-        console.log('Message deleted:', deletedMessageId);
-      });
-
       return () => {
-        newSocket.off('messageDeleted');
-        newSocket.off('getOnlineUsers');
         newSocket.close();
+        setSocket(null);
       };
     } else {
-      if (socket) {
-        socket.close();
-        setSocket(null);
-      }
+      // If no token, ensure socket is null
+      setSocket(null);
     }
-  }, [authUser]);
+  }, [token]);
 
+  // Always provide the context, even if socket is null
   return (
-    <socketContext.Provider value={{ socket, onlineUsers }}>
-      {children}
-    </socketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
+
