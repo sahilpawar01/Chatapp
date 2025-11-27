@@ -1,15 +1,16 @@
 # Chat App - MERN Stack
+# visit the app -> https://chat-frontend-52ux.onrender.com/
 
 A real-time chat application built with MongoDB, Express, React, and Node.js, featuring JWT authentication and Socket.io for real-time messaging.
 
 ## Features
 
-- 🔐 User authentication (Register/Login) with JWT
-- 💬 Real-time messaging with Socket.io
-- 👥 User list with online/offline status
-- 🎨 Modern and responsive UI
-- 🔒 Secure password hashing with bcrypt
-- 📱 Mobile-friendly design
+-  User authentication (Register/Login) with JWT
+-  Real-time messaging with Socket.io
+-  User list with online/offline status
+-  Modern and responsive UI
+-  Secure password hashing with bcrypt
+-  Mobile-friendly design
 
 ## Tech Stack
 
